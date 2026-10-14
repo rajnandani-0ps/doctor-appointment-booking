@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Patient Portal - DocCare</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar">
+        <a href="index.html" class="nav-brand">
+            <svg fill="currentColor" viewBox="0 0 24 24"><path d="M19 10.5V6a2 2 0 0 0-2-2h-3V2a1 1 0 0 0-2 0v2H8a2 2 0 0 0-2 2v4.5A4.5 4.5 0 0 0 10.5 15h3A4.5 4.5 0 0 0 18 10.5M10 6h4v3h-4V6m2 11a6.5 6.5 0 0 1-6.5-6.5V6a4 4 0 0 1 4-4h5a4 4 0 0 1 4 4v4.5A6.5 6.5 0 0 1 12 17m7 1h-2v4h-2v-4h-2v-2h6v2z"/></svg>
+            <span>DocCare</span>
+        </a>
+        <div id="nav-user-area" class="nav-links">
+            <!-- Dynamically populated by api.js -->
+        </div>
+    </nav>
+
+    <!-- Main Container -->
+    <main class="container">
+        <!-- Dashboard Greeting -->
+        <div style="margin-bottom: 2rem;">
+            <h1 style="font-size: 1.85rem; font-weight: 800;">Welcome, <span id="patient-welcome-name">Patient</span>!</h1>
+            <p style="color: #64748b;">Manage your appointments, discover specialists, and access digital prescriptions.</p>
+        </div>
+
+        <!-- Dashboard Tabs -->
+        <div class="tabs-header">
+            <button id="tab-btn-doctors" class="tab-btn active" onclick="switchTab('doctors')">🔍 Find Doctors</button>
+            <button id="tab-btn-appointments" class="tab-btn" onclick="switchTab('appointments')">📅 My Appointments</button>
+            <button id="tab-btn-profile" class="tab-btn" onclick="switchTab('profile')">👤 Health Profile</button>
+        </div>
+
+        <!-- TAB 1: Find Doctors & Book -->
+        <section id="tab-doctors" class="tab-content" style="display: block;">
+            <!-- Search & Filter Card -->
+            <form onsubmit="handleSearch(event)" class="search-filter-card">
+                <div>
+                    <label class="form-label">Search Doctor or Condition</label>
+                    <input type="text" id="search-input" class="form-control" placeholder="Search by name, clinic, or keywords...">
+                </div>
+                <div>
+                    <label class="form-label">Specialization</label>
+                    <select id="filter-specialization" class="form-control" onchange="handleSearch(event)">
+                        <option value="">All Specializations</option>
+                    </select>
+                </div>
+                <div style="align-self: flex-end;">
+                    <button type="submit" class="btn btn-primary" style="height: 40px; padding: 0 1.5rem;">
+                        Search
+                    </button>
+                </div>
+            </form>
+
+            <!-- Doctors Grid -->
+            <div id="doctors-grid" class="doctor-grid">
+                <!-- Injected via JavaScript -->
+            </div>
+        </section>
+
+        <!-- TAB 2: My Appointments -->
+        <section id="tab-appointments" class="tab-content" style="display: none;">
+            <div class="table-card">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Doctor</th>
+                            <th>Date</th>
+                            <th>Time</th>
+                            <th>Status</th>
+                            <th>Reason</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="appointments-table-body">
+                        <!-- Injected via JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- TAB 3: Health Profile -->
+        <section id="tab-profile" class="tab-content" style="display: none;">
+            <div class="auth-card" style="max-width: 650px; margin: 0 auto;">
+                <h3 style="font-size: 1.25rem; font-weight: 700; margin-bottom: 1.25rem;">Medical Profile & History</h3>
+                <form id="profile-form">
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1rem;">
+                        <div class="form-group">
+                            <label class="form-label" for="profile-dob">Date of Birth</label>
+                            <input type="date" id="profile-dob" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="profile-gender">Gender</label>
+                            <select id="profile-gender" class="form-control">
+                                <option value="">Select Gender</option>
+                                <option value="Male">Male</option>
+                                <option value="Female">Female</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="profile-blood">Blood Group</label>
+                            <select id="profile-blood" class="form-control">
+                                <option value="">Select Blood Group</option>
+                                <option value="A+">A+</option>
+                                <option value="A-">A-</option>
+                                <option value="B+">B+</option>
+                                <option value="B-">B-</option>
+                                <option value="O+">O+</option>
+                                <option value="O-">O-</option>
+                                <option value="AB+">AB+</option>
+                                <option value="AB-">AB-</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="profile-address">Address</label>
+                        <input type="text" id="profile-address" class="form-control">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="profile-emergency">Emergency Contact</label>
+                        <input type="text" id="profile-emergency" class="form-control">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="profile-medhistory">Medical History / Allergies</label>
+                        <textarea id="profile-medhistory" class="form-control" rows="3"></textarea>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary" style="margin-top: 0.5rem;">Save Profile Updates</button>
+                </form>
+            </div>
+        </section>
+    </main>
+
+    <!-- Booking Modal -->
+    <div id="booking-modal" class="modal-overlay">
+        <div class="modal-dialog">
+            <div class="modal-header">
+                <div>
+                    <h3 id="modal-doctor-name">Doctor Name</h3>
+                    <span id="modal-doctor-spec" class="specialization-tag">Cardiology</span>
+                    <span id="modal-doctor-fee" style="font-weight: 700; color: var(--primary); margin-left: 0.5rem;">$75</span>
+                </div>
+                <button type="button" class="modal-close" onclick="closeBookingModal()">✕</button>
+            </div>
+            <form id="booking-form">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label class="form-label" for="booking-date">Select Appointment Date</label>
+                        <input type="date" id="booking-date" class="form-control" onchange="onDateChange()" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Select Available Time Slot</label>
+                        <div id="slots-grid" class="slots-container">
+                            <!-- Slot buttons injected via JS -->
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="booking-reason">Symptoms / Reason for Visit</label>
+                        <textarea id="booking-reason" class="form-control" placeholder="Describe symptoms or reason for scheduling this consultation..."></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" onclick="closeBookingModal()">Cancel</button>
+                    <button type="submit" id="confirm-booking-btn" class="btn btn-primary">Confirm Booking</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Prescription / Doctor Notes Modal -->
+    <div id="prescription-modal" class="modal-overlay">
+        <div class="modal-dialog">
+            <div class="modal-header">
+                <h3>📋 Consultation Summary & Prescription</h3>
+                <button type="button" class="modal-close" onclick="closePrescriptionModal()">✕</button>
+            </div>
+            <div class="modal-body">
+                <div style="background-color: #f8fafc; border: 1px solid var(--border); border-radius: var(--radius-md); padding: 1rem; margin-bottom: 1.25rem;">
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 0.35rem;">
+                        <span style="color: #64748b; font-size: 0.85rem;">Consulting Doctor:</span>
+                        <strong id="modal-rx-doctor">Dr. Doctor</strong>
+                    </div>
+                    <div style="display: flex; justify-content: space-between;">
+                        <span style="color: #64748b; font-size: 0.85rem;">Consultation Date:</span>
+                        <strong id="modal-rx-date">2026-10-15</strong>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Doctor's Clinical Notes & Remarks</label>
+                    <div id="modal-rx-notes" style="background: #ffffff; border: 1px solid var(--border); border-radius: var(--radius-md); padding: 0.85rem; font-size: 0.9rem; line-height: 1.5; min-height: 60px;"></div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Digital Prescription & Medicines</label>
+                    <pre id="modal-rx-content" style="background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: var(--radius-md); padding: 0.85rem; font-family: inherit; font-size: 0.9rem; white-space: pre-wrap; line-height: 1.5; color: #166534;"></pre>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" onclick="window.print()">🖨️ Print Prescription</button>
+                <button type="button" class="btn btn-secondary" onclick="closePrescriptionModal()">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <p>© 2026 DocCare Appointment Booking System.</p>
+    </footer>
+
+    <script src="js/api.js"></script>
+    <script src="js/patient.js"></script>
+</body>
+</html>

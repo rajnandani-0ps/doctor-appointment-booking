@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DocCare - Book a Doctor's Appointment</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <a href="index.html" class="nav-brand">
+            <svg fill="currentColor" viewBox="0 0 24 24"><path d="M19 10.5V6a2 2 0 0 0-2-2h-3V2a1 1 0 0 0-2 0v2H8a2 2 0 0 0-2 2v4.5A4.5 4.5 0 0 0 10.5 15h3A4.5 4.5 0 0 0 18 10.5M10 6h4v3h-4V6m2 11a6.5 6.5 0 0 1-6.5-6.5V6a4 4 0 0 1 4-4h5a4 4 0 0 1 4 4v4.5A6.5 6.5 0 0 1 12 17m7 1h-2v4h-2v-4h-2v-2h6v2z"/></svg>
+            <span>DocCare</span>
+        </a>
+        <div id="nav-user-area" class="nav-links">
+            <a href="login.html" class="btn btn-secondary btn-sm">Login</a>
+            <a href="register.html" class="btn btn-primary btn-sm">Sign Up</a>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="container">
+        <!-- Hero Section -->
+        <section class="hero">
+            <h1>Find Trusted Doctors & Book Appointments Instantly</h1>
+            <p>Connect with board-certified physicians, dermatologists, pediatricians, cardiologists, and specialists. Schedule your visit with zero waiting time.</p>
+            <div class="hero-actions">
+                <a href="#browse-doctors" class="btn hero-btn">Browse Top Doctors</a>
+                <a href="register.html" class="btn" style="background: rgba(255,255,255,0.2); color: #fff; border: 1px solid rgba(255,255,255,0.4); border-radius: 9999px;">Join as a Doctor</a>
+            </div>
+        </section>
+
+        <!-- Search and Filter Bar -->
+        <section id="browse-doctors" class="search-filter-card">
+            <div>
+                <label class="form-label">Search Doctor or Condition</label>
+                <input type="text" id="home-search" class="form-control" placeholder="Search by doctor name, specialty, clinic...">
+            </div>
+            <div>
+                <label class="form-label">Specialization</label>
+                <select id="home-spec" class="form-control">
+                    <option value="">All Specialties</option>
+                </select>
+            </div>
+            <div style="align-self: flex-end;">
+                <button onclick="filterHomeDoctors()" class="btn btn-primary" style="height: 40px; padding: 0 1.5rem;">
+                    Search
+                </button>
+            </div>
+        </section>
+
+        <!-- Doctors Grid Section -->
+        <section>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem;">
+                <h2 style="font-size: 1.5rem; font-weight: 700;">Available Doctors</h2>
+                <span id="doctor-count-badge" style="font-size: 0.9rem; color: #64748b;">Showing all verified specialists</span>
+            </div>
+            <div id="home-doctors-grid" class="doctor-grid">
+                <!-- Injected via JavaScript -->
+            </div>
+        </section>
+
+        <!-- How It Works Section -->
+        <section style="margin-top: 4rem; padding: 2.5rem 1rem; background-color: #ffffff; border-radius: var(--radius-lg); border: 1px solid var(--border);">
+            <h2 style="text-align: center; font-size: 1.75rem; font-weight: 800; margin-bottom: 2rem;">How DocCare Works</h2>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 2rem; text-align: center;">
+                <div>
+                    <div style="font-size: 2.5rem; margin-bottom: 0.75rem;">🔍</div>
+                    <h3 style="font-size: 1.15rem; font-weight: 700; margin-bottom: 0.5rem;">1. Find Your Doctor</h3>
+                    <p style="color: #64748b; font-size: 0.9rem;">Browse verified specialists, reviews, consultation fees, and clinical qualifications.</p>
+                </div>
+                <div>
+                    <div style="font-size: 2.5rem; margin-bottom: 0.75rem;">📅</div>
+                    <h3 style="font-size: 1.15rem; font-weight: 700; margin-bottom: 0.5rem;">2. Choose Date & Slot</h3>
+                    <p style="color: #64748b; font-size: 0.9rem;">Pick from available real-time time slots that suit your convenience.</p>
+                </div>
+                <div>
+                    <div style="font-size: 2.5rem; margin-bottom: 0.75rem;">⚡</div>
+                    <h3 style="font-size: 1.15rem; font-weight: 700; margin-bottom: 0.5rem;">3. Instant Confirmation</h3>
+                    <p style="color: #64748b; font-size: 0.9rem;">Get instant appointment booking confirmation and communicate directly with your doctor.</p>
+                </div>
+                <div>
+                    <div style="font-size: 2.5rem; margin-bottom: 0.75rem;">📋</div>
+                    <h3 style="font-size: 1.15rem; font-weight: 700; margin-bottom: 0.5rem;">4. Prescription & Notes</h3>
+                    <p style="color: #64748b; font-size: 0.9rem;">Access post-consultation digital prescriptions and doctor clinical notes securely anytime.</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>© 2026 DocCare Appointment Booking System. Built with Full Stack Java & Spring Boot.</p>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="js/api.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            await loadSpecializationsHome();
+            await loadDoctorsHome();
+        });
+
+        async function loadSpecializationsHome() {
+            try {
+                const res = await request('/doctors/specializations');
+                const select = document.getElementById('home-spec');
+                if (select && res && res.data) {
+                    res.data.forEach(spec => {
+                        const opt = document.createElement('option');
+                        opt.value = spec;
+                        opt.innerText = spec;
+                        select.appendChild(opt);
+                    });
+                }
+            } catch (e) {
+                console.error(e);
+            }
+        }
+
+        async function loadDoctorsHome(search = '', spec = '') {
+            const grid = document.getElementById('home-doctors-grid');
+            grid.innerHTML = '<div style="grid-column: 1/-1; text-align: center; padding: 2rem; color: #64748b;">Loading doctors...</div>';
+
+            try {
+                let url = '/doctors';
+                const p = new URLSearchParams();
+                if (search) p.append('search', search);
+                if (spec) p.append('specialization', spec);
+                if (p.toString()) url += `?${p.toString()}`;
+
+                const res = await request(url);
+                if (!res || !res.data || res.data.length === 0) {
+                    grid.innerHTML = '<div style="grid-column: 1/-1; text-align: center; padding: 2rem; color: #64748b;">No doctors found.</div>';
+                    return;
+                }
+
+                grid.innerHTML = res.data.map(doc => {
+                    const avatar = doc.profileImageUrl || 'https://images.unsplash.com/photo-1622253692010-333f2da6031d?w=300&auto=format&fit=crop&q=80';
+                    const rating = doc.rating ? Number(doc.rating).toFixed(1) : '5.0';
+                    return `
+                        <div class="doctor-card">
+                            <div class="doctor-card-header">
+                                <img src="${avatar}" alt="${doc.fullName}" class="doctor-avatar" onerror="this.src='https://images.unsplash.com/photo-1622253692010-333f2da6031d?w=300&auto=format&fit=crop&q=80'">
+                                <div class="doctor-info">
+                                    <h3>${doc.fullName}</h3>
+                                    <span class="specialization-tag">${doc.specialization}</span>
+                                    <div class="doctor-rating">★ ${rating} <span style="color: #64748b; font-size: 0.75rem;">(${doc.totalReviews || 0} reviews)</span></div>
+                                </div>
+                            </div>
+                            <div class="doctor-card-body">
+                                <div>
+                                    <div class="doctor-meta-row">
+                                        <span><strong>Exp:</strong> ${doc.experienceYears || 0} years</span>
+                                        <span class="doctor-fee">$${doc.consultationFee || 0}</span>
+                                    </div>
+                                    <div class="doctor-bio">${doc.bio || 'Experienced medical practitioner.'}</div>
+                                    <div class="doctor-address"><span>📍</span><span>${doc.clinicAddress || 'Medical Clinic'}</span></div>
+                                </div>
+                                <a href="login.html" class="btn btn-primary btn-block">Book Appointment</a>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+            } catch (err) {
+                grid.innerHTML = `<div style="grid-column: 1/-1; text-align: center; padding: 2rem; color: #dc2626;">Error loading doctors: ${err.message}</div>`;
+            }
+        }
+
+        function filterHomeDoctors() {
+            const search = document.getElementById('home-search').value.trim();
+            const spec = document.getElementById('home-spec').value;
+            loadDoctorsHome(search, spec);
+        }
+    </script>
+</body>
+</html>

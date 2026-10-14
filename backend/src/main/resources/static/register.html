@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Account - DocCare</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+    <!-- Simple Nav -->
+    <nav class="navbar">
+        <a href="index.html" class="nav-brand">
+            <svg fill="currentColor" viewBox="0 0 24 24"><path d="M19 10.5V6a2 2 0 0 0-2-2h-3V2a1 1 0 0 0-2 0v2H8a2 2 0 0 0-2 2v4.5A4.5 4.5 0 0 0 10.5 15h3A4.5 4.5 0 0 0 18 10.5M10 6h4v3h-4V6m2 11a6.5 6.5 0 0 1-6.5-6.5V6a4 4 0 0 1 4-4h5a4 4 0 0 1 4 4v4.5A6.5 6.5 0 0 1 12 17m7 1h-2v4h-2v-4h-2v-2h6v2z"/></svg>
+            <span>DocCare</span>
+        </a>
+        <div>
+            <a href="login.html" class="btn btn-outline btn-sm">Sign In</a>
+        </div>
+    </nav>
+
+    <div class="auth-wrapper wide">
+        <div class="auth-card">
+            <div class="auth-header">
+                <h2>Join DocCare</h2>
+                <p>Select your account type to get started</p>
+            </div>
+
+            <!-- Role Selection Toggle -->
+            <div class="role-toggle-group">
+                <button type="button" id="role-btn-patient" class="role-toggle-btn active" onclick="setRegisterRole('ROLE_PATIENT')">
+                    👤 Patient Account
+                </button>
+                <button type="button" id="role-btn-doctor" class="role-toggle-btn" onclick="setRegisterRole('ROLE_DOCTOR')">
+                    🩺 Doctor Account
+                </button>
+            </div>
+
+            <form id="register-form">
+                <!-- Shared User Credentials -->
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1rem;">
+                    <div class="form-group">
+                        <label class="form-label" for="reg-name">Full Name *</label>
+                        <input type="text" id="reg-name" class="form-control" placeholder="e.g. John Doe / Dr. Alice Smith" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="reg-email">Email Address *</label>
+                        <input type="email" id="reg-email" class="form-control" placeholder="name@example.com" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="reg-password">Password * (min 6 characters)</label>
+                        <input type="password" id="reg-password" class="form-control" placeholder="••••••••" minlength="6" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="reg-phone">Phone Number</label>
+                        <input type="tel" id="reg-phone" class="form-control" placeholder="+1 (555) 000-0000">
+                    </div>
+                </div>
+
+                <!-- Doctor-Specific Fields -->
+                <div id="doctor-specific-fields" style="display: none; border-top: 1px solid var(--border); padding-top: 1.25rem; margin-top: 0.5rem;">
+                    <h4 style="font-size: 1rem; color: var(--primary); margin-bottom: 1rem;">🩺 Doctor Professional Details</h4>
+                    
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem;">
+                        <div class="form-group">
+                            <label class="form-label" for="reg-spec">Specialization *</label>
+                            <input type="text" id="reg-spec" class="form-control" placeholder="e.g. Cardiology, Dermatology, Pediatrics">
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label" for="reg-qual">Medical Qualifications</label>
+                            <input type="text" id="reg-qual" class="form-control" placeholder="e.g. MBBS, MD, MS">
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label" for="reg-exp">Years of Experience</label>
+                            <input type="number" id="reg-exp" class="form-control" min="0" placeholder="e.g. 8">
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label" for="reg-fee">Consultation Fee ($) *</label>
+                            <input type="number" id="reg-fee" class="form-control" min="0" step="5" placeholder="e.g. 60">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="reg-clinic">Clinic Address / Hospital Name</label>
+                        <input type="text" id="reg-clinic" class="form-control" placeholder="e.g. Suite 300, City Medical Plaza, New York">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="reg-bio">Professional Bio & About</label>
+                        <textarea id="reg-bio" class="form-control" placeholder="Brief summary of your clinical expertise and background..."></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="reg-photo">Profile Photo Image URL (Optional)</label>
+                        <input type="url" id="reg-photo" class="form-control" placeholder="https://example.com/avatar.jpg">
+                    </div>
+                </div>
+
+                <!-- Patient-Specific Fields -->
+                <div id="patient-specific-fields" style="border-top: 1px solid var(--border); padding-top: 1.25rem; margin-top: 0.5rem;">
+                    <h4 style="font-size: 1rem; color: var(--primary); margin-bottom: 1rem;">👤 Patient Medical Information</h4>
+                    
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1rem;">
+                        <div class="form-group">
+                            <label class="form-label" for="reg-dob">Date of Birth</label>
+                            <input type="date" id="reg-dob" class="form-control">
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label" for="reg-gender">Gender</label>
+                            <select id="reg-gender" class="form-control">
+                                <option value="">Select Gender</option>
+                                <option value="Male">Male</option>
+                                <option value="Female">Female</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label" for="reg-blood">Blood Group</label>
+                            <select id="reg-blood" class="form-control">
+                                <option value="">Select Blood Group</option>
+                                <option value="A+">A+</option>
+                                <option value="A-">A-</option>
+                                <option value="B+">B+</option>
+                                <option value="B-">B-</option>
+                                <option value="O+">O+</option>
+                                <option value="O-">O-</option>
+                                <option value="AB+">AB+</option>
+                                <option value="AB-">AB-</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="reg-address">Residential Address</label>
+                        <input type="text" id="reg-address" class="form-control" placeholder="Street address, City, State">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="reg-emergency">Emergency Contact (Name & Phone)</label>
+                        <input type="text" id="reg-emergency" class="form-control" placeholder="e.g. Jane Doe (+1 555-987-6543)">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="reg-medhistory">Past Medical Conditions / Known Allergies</label>
+                        <textarea id="reg-medhistory" class="form-control" placeholder="e.g. Penicillin allergy, Asthma, Hypertension..."></textarea>
+                    </div>
+                </div>
+
+                <button type="submit" id="reg-submit-btn" class="btn btn-primary btn-block" style="margin-top: 1.5rem; padding: 0.75rem;">
+                    Create Account
+                </button>
+            </form>
+
+            <div style="text-align: center; margin-top: 1.5rem; font-size: 0.9rem; color: #64748b;">
+                Already have an account? <a href="login.html" style="font-weight: 600;">Sign in here</a>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <p>© 2026 DocCare Appointment Booking System.</p>
+    </footer>
+
+    <script src="js/api.js"></script>
+    <script src="js/auth.js"></script>
+</body>
+</html>

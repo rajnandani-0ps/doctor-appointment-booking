@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - DocCare</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+    <!-- Simple Nav -->
+    <nav class="navbar">
+        <a href="index.html" class="nav-brand">
+            <svg fill="currentColor" viewBox="0 0 24 24"><path d="M19 10.5V6a2 2 0 0 0-2-2h-3V2a1 1 0 0 0-2 0v2H8a2 2 0 0 0-2 2v4.5A4.5 4.5 0 0 0 10.5 15h3A4.5 4.5 0 0 0 18 10.5M10 6h4v3h-4V6m2 11a6.5 6.5 0 0 1-6.5-6.5V6a4 4 0 0 1 4-4h5a4 4 0 0 1 4 4v4.5A6.5 6.5 0 0 1 12 17m7 1h-2v4h-2v-4h-2v-2h6v2z"/></svg>
+            <span>DocCare</span>
+        </a>
+        <div>
+            <a href="register.html" class="btn btn-outline btn-sm">Sign Up</a>
+        </div>
+    </nav>
+
+    <div class="auth-wrapper">
+        <div class="auth-card">
+            <div class="auth-header">
+                <h2>Welcome Back</h2>
+                <p>Sign in to your DocCare account</p>
+            </div>
+
+            <form id="login-form">
+                <div class="form-group">
+                    <label class="form-label" for="login-email">Email Address</label>
+                    <input type="email" id="login-email" class="form-control" placeholder="name@example.com" required>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="login-password">Password</label>
+                    <input type="password" id="login-password" class="form-control" placeholder="••••••••" required>
+                </div>
+
+                <button type="submit" id="login-submit-btn" class="btn btn-primary btn-block" style="margin-top: 1.25rem;">
+                    Sign In
+                </button>
+            </form>
+
+            <!-- Quick Demo Credentials Box -->
+            <div class="demo-credentials-box">
+                <h5>🚀 Quick Demo One-Click Fill:</h5>
+                <p style="color: #166534; margin-bottom: 0.5rem;">Pre-configured test accounts ready to use:</p>
+                <div class="demo-btn-row">
+                    <button type="button" onclick="fillDemoLogin('patient')" class="btn btn-secondary btn-sm" style="flex: 1;">
+                        👤 Patient Demo
+                    </button>
+                    <button type="button" onclick="fillDemoLogin('doctor')" class="btn btn-secondary btn-sm" style="flex: 1;">
+                        🩺 Doctor Demo
+                    </button>
+                </div>
+            </div>
+
+            <div style="text-align: center; margin-top: 1.5rem; font-size: 0.9rem; color: #64748b;">
+                Don't have an account? <a href="register.html" style="font-weight: 600;">Register here</a>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <p>© 2026 DocCare Appointment Booking System.</p>
+    </footer>
+
+    <script src="js/api.js"></script>
+    <script src="js/auth.js"></script>
+</body>
+</html>
