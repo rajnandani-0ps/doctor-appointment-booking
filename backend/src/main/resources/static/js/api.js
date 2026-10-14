@@ -2,9 +2,10 @@
  * Central API Client for Doctor Appointment Booking System
  */
 
-const API_BASE_URL = window.location.origin.includes(':8080')
-    ? `${window.location.origin}/api`
-    : 'http://localhost:8080/api';
+const isLocalDevServer = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') && window.location.port !== '8080';
+const API_BASE_URL = isLocalDevServer || window.location.protocol === 'file:'
+    ? 'http://localhost:8080/api'
+    : `${window.location.origin}/api`;
 
 const TOKEN_KEY = 'doctorapp_token';
 const USER_KEY = 'doctorapp_user';
